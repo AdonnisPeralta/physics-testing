@@ -8,16 +8,7 @@ function setup() {
 
 function draw() {
   background(255);
-  let gravity = createVector(0.0, 0.4);
-  let c = 0.1;
-  let normalForce = 1;
-      
-  let frictionMag = c * normalForce;
-  let friction = ball.vel.copy();
   
-  friction.mult(-1);
-  friction.normalize();
-  friction.mult(frictionMag);
   
   
   
@@ -31,6 +22,16 @@ function draw() {
   }
   
   if(ball.bounceEdges()) {
+    let gravity = createVector(0.0, 0.4);
+    let c = 0.1;
+    let normalForce = 1;
+      
+    let frictionMag = c * normalForce;
+    let friction = ball.vel.copy();
+  
+    friction.mult(-1);
+    friction.normalize();
+    friction.mult(frictionMag);
     ball.applyForce(friction);
   }
   
