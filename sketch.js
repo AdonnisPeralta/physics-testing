@@ -1,16 +1,24 @@
-let ball;
+let balls = [];
 
 function setup() {
   createCanvas(400, 400);
-  ball = new Ball(width/2,50, 10);
+  
+  for (let i = 0; i < 5; i++) {
+    ball = new Ball(random(width),random(height), random(5,50));
+    balls.push(ball);
+  }
+  
   wind = createVector(0.1,0);
 }
 
 function draw() {
   background(255);
   
-  
-  
+  balls.forEach(ballLogic);
+}
+
+function ballLogic(ball) {
+  let gravity = createVector(0.0, 0.4);
   
   if(mouseIsPressed) {
     let wind = createVector(0.5, 0.0);
@@ -22,7 +30,6 @@ function draw() {
   }
   
   if(ball.bounceEdges()) {
-    let gravity = createVector(0.0, 0.4);
     let c = 0.1;
     let normalForce = 1;
       
@@ -32,6 +39,7 @@ function draw() {
     friction.mult(-1);
     friction.normalize();
     friction.mult(frictionMag);
+    
     ball.applyForce(friction);
   }
   
@@ -47,7 +55,7 @@ class Ball {
     this.vel = createVector(0,0);
     this.acc = createVector(0,0);
     this.mass = mass;
-    this.radius = 50;
+    this.radius = mass;
   }
   
   update() {
