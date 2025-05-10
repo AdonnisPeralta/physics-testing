@@ -9,6 +9,17 @@ function setup() {
 function draw() {
   background(255);
   let gravity = createVector(0.0, 0.4);
+  let c = 0.1;
+  let normalForce = 1;
+      
+  let frictionMag = c * normalForce;
+  let friction = ball.vel.copy();
+  
+  friction.mult(-1);
+  friction.normalize();
+  friction.mult(frictionMag);
+  
+  
   
   if(mouseIsPressed) {
     let wind = createVector(0.5, 0.0);
@@ -17,6 +28,10 @@ function draw() {
     wind.add(direction)
     
     ball.applyForce(wind);
+  }
+  
+  if(ball.bounceEdges()) {
+    ball.applyForce(friction);
   }
   
   ball.applyForce(gravity);
@@ -40,15 +55,17 @@ class Ball {
     this.acc.mult(0);
   }
   
+  bounceEdges() {
+    return (this.position.y > height - this.radius - 1);
+  }
+  
   checkEdge() {
-    if(this.position.y >= (height - this.radius)) {
+    if(this.position.y >= (height - this.radius)) {      
       this.position.y = height - this.radius;
       this.vel.y = this.vel.y * -1 * 0.5;
-      this.acc.mult(0);
     } else if (this.position.y <= this.radius) {
       this.position.y = this.radius;
       this.vel.y = this.vel.y * -1 * 0.5;
-      this.acc.mult(0);
     }
     
     if(this.position.x >= (width - this.radius)) {
